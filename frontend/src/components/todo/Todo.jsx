@@ -1,13 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './Todo.css'
 import TodoCards from './TodoCards';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Update from './Update';
+import { UseSelector, useDispatch } from 'react-redux';
+import { authActions } from '../../store';
+import axios from 'axios';
+
+let id=sessionStorage.getItem("id");
 
 const Todo = () => {
     const [inputs, setInputs]=useState({title:'',body:''});
     const [array,setArray]=useState([]);
+
+
     const show = () => {
         document.getElementById("textarea").style.display="block";
     };
@@ -15,27 +22,51 @@ const Todo = () => {
         const {name,value}=e.target;
         setInputs({...inputs,[name]:value});
     };
-    const submit = () => {
+    const submit = async() => {
         if(inputs.title ==='' || inputs.body === '')
         {
             toast.error('Title Or Body Should Not Be Empty');
         }
         else
         {
-            setArray([...array,inputs]);
-            setInputs({title:'',body:''});
-            toast.success('Your Task is Added');
-            toast.error('Your Task is Not Saved! Please Sign Up');
+            if(id)
+            {
+                await axios.post('http://localhost:1000/api/v2/addTask',{title:inputs.title,body:inputs.body,id:id}).then((res) => {
+                    console.log(res);
+                });
+                setInputs({title:'',body:''});
+                toast.success('Your Task is Added');
+            }
+            else
+            {
+                setArray([...array,inputs]);
+                setInputs({title:'',body:''});
+                toast.success('Your Task is Added');
+                toast.error('Your Task is Not Saved! Please Sign Up');
+            }
         }
     };
-    const del = (id) => {
-        array.splice(id,"1");
-        setArray([...array]);
+    const del = async(cardid) => {
+        //console.log(id);
+        await axios.delete(`http://localhost:1000/api/v2/deleteTask/${cardid}`,{data:{id:id}}).then((res) => {
+            toast.success('Your Task is Deleted');
+        });
+        //array.splice(id,"1");
+        //setArray([...array]);
     }
     const dis=(value) => {
         console.log(value);
         document.getElementById('todo-update').style.display=value;
     }
+
+    useEffect(() => {
+        const fetch=async () => {
+            await axios.get(`http://localhost:1000/api/v2/getTasks/${id}`).then((res) => {
+                setArray(res.data.list);
+            })
+        };
+        fetch();
+    },[submit]);
 
   return (
     <>
@@ -70,7 +101,7 @@ const Todo = () => {
                     <div className='row'>
                         {array && array.map((item,index)=>(
                         <div className='col-lg-3 col-10 mx-5 my-2' key={index}>
-                            <TodoCards title={item.title} body={item.body} id={index} delid={del} display={dis}/>
+                            <TodoCards title={item.title} body={item.body} id={item._id} delid={del} display={dis}/>
                         </div>
                     ))}
                     </div>
