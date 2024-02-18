@@ -2,8 +2,18 @@ import React from "react";
 import './Navbar.css';
 import { FaBookOpenReader } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useDispatch } from 'react-redux';
+import { authActions } from '../../store';
 
 const Navbar = () => {
+  const isLoggedIn=useSelector((state) => state.isLoggedIn);
+  const dispatch=useDispatch();
+  const logout= () => {
+    sessionStorage.clear('id');
+    dispatch(authActions.logout());
+  }
+  console.log(isLoggedIn);
   return (
     <div>
       <nav className="navbar navbar-expand-lg">
@@ -40,21 +50,27 @@ const Navbar = () => {
                   Todo
                 </Link>
               </li>
-              <li className="nav-item mx-2">
-                <Link className="nav-link active btn-nav" aria-current="page" to="/signup">
-                  Sign Up
-                </Link>
-              </li>
-              <li className="nav-item mx-2">
-                <Link className="nav-link active btn-nav" aria-current="page" to="/signin">
-                  Sign In
-                </Link>
-              </li>
-              <li className="nav-item mx-2">
-                <Link className="nav-link active btn-nav" aria-current="page" to="/">
+              {!isLoggedIn && 
+              <>
+                <li className="nav-item mx-2">
+                  <Link className="nav-link active btn-nav" aria-current="page" to="/signup">
+                    Sign Up
+                  </Link>
+                </li>
+                <li className="nav-item mx-2">
+                  <Link className="nav-link active btn-nav" aria-current="page" to="/signin">
+                    Sign In
+                  </Link>
+                </li>
+              </>}
+              {isLoggedIn && (
+                <li className="nav-item mx-2" onClick={logout}>
+                <Link className="nav-link active btn-nav" aria-current="page" to="/" >
                   Log out
                 </Link>
               </li>
+              )}
+              
               {/* <li className="nav-item mx-2">
                 <Link className="nav-link active" aria-current="page" to="#">
                   <img className="img-fluid user-png" src="https://static.vecteezy.com/system/resources/previews/019/879/186/original/user-icon-on-transparent-background-free-png.png"
