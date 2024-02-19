@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import './Todo.css'
 import TodoCards from './TodoCards';
 import { ToastContainer, toast } from 'react-toastify';
@@ -46,6 +46,7 @@ const Todo = () => {
             }
         }
     };
+
     const del = async(cardid) => {
         //console.log(id);
         await axios.delete(`http://localhost:1000/api/v2/deleteTask/${cardid}`,{data:{id:id}}).then((res) => {
@@ -67,6 +68,7 @@ const Todo = () => {
         };
         fetch();
     },[submit]);
+    
 
   return (
     <>

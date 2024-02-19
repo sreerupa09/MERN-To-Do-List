@@ -17,15 +17,29 @@ const Signin = () => {
     const { name, value } = e.target;
     setInputs({ ...inputs, [name]: value });
   };
+  // const submit = async (e) => {
+  //   e.preventDefault();
+  //   await axios.post('http://localhost:1000/api/v1/signin',inputs).then((res) => {
+  //     console.log(res.data.others._id);
+  //     sessionStorage.setItem("id",res.data.others._id);
+  //     dispatch(authActions.login());
+  //     history('/todo');
+  //   });
+  // }
   const submit = async (e) => {
     e.preventDefault();
-    await axios.post('http://localhost:1000/api/v1/signin',inputs).then((res) => {
-      //console.log(res.data.others._id);
-      sessionStorage.setItem("id",res.data.others._id);
-      dispatch(authActions.login());
-      history('/todo');
-    });
+    await axios.post('http://localhost:1000/api/v1/signin',inputs)
+      .then((res) => {
+        console.log(res.data.others._id);
+        sessionStorage.setItem("id",res.data.others._id);
+        dispatch(authActions.login());
+        history('/todo');
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
   }
+  
   return (
     <div className="signup">
       <div className="container">
