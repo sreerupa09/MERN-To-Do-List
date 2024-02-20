@@ -28,7 +28,7 @@ const Signin = () => {
   // }
   const submit = async (e) => {
     e.preventDefault();
-    await axios.post('http://localhost:1000/api/v1/signin',inputs)
+    await axios.post('http://localhost:1000/api/v1/signin',inputs,{ timeout: 5000 })
       .then((res) => {
         console.log(res.data.others._id);
         sessionStorage.setItem("id",res.data.others._id);
@@ -44,11 +44,11 @@ const Signin = () => {
     <div className="signup">
       <div className="container">
         <div className="row">
-          <div className="col-lg-4 column col-left d-flex justify-content-center align-items-center">
+          <div className="col-lg-4 column col-left d-none d-flex justify-content-center align-items-center">
             <HeadingCompo first='Sign' second='In'/>
           </div>
-          <div className="col-lg-8 column d-flex justify-content-center align-items-center">
-            <div className="d-flex flex-column w-100 p-5">
+          <div className="col-lg-8 column d-lg-flex justify-content-center align-items-center">
+            <div className="d-flex flex-column w-100 p-3">
               <input
                 className="p-2 my-3 input-signup"
                 type="email"

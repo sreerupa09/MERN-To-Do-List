@@ -2,7 +2,7 @@ import React from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { GrUpdate } from "react-icons/gr";
 
-const TodoCards = ({ title, body, id, delid, display }) => {
+const TodoCards = ({ title, body, id, delid, display, updateId, toBeUpdate }) => {
   return (
     <div className="p-3 todo-card">
       <div>
@@ -10,10 +10,13 @@ const TodoCards = ({ title, body, id, delid, display }) => {
         <p className="todo-card-p">{body.slice("", 77)}...</p>
       </div>
       <div className="d-flex justify-content-around">
-        <div className="d-flex justify-content-center align-items-center card-icon-head px-2 py-1 card-text"
-        onClick={() => {
-            display('block');
-        }}>
+        <div
+          className="d-flex justify-content-center align-items-center card-icon-head px-2 py-1 card-text"
+          onClick={() => {
+            display("block");
+            toBeUpdate(updateId);
+          }}
+        >
           <GrUpdate className="card-icons update" /> Update
         </div>
         <div
