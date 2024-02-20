@@ -15,6 +15,7 @@ const Signup = () => {
     const { name, value } = e.target;
     setInputs({ ...inputs, [name]: value });
   };
+
   const submit = async (e) => {
     e.preventDefault();
     await axios
@@ -33,6 +34,7 @@ const Signup = () => {
         }
       });
   };
+
   return (
     <div className="signup">
       <div className="container">
@@ -68,7 +70,7 @@ const Signup = () => {
               </button>
             </div>
           </div>
-          <div className=" col-lg-4 column col-left d-lg-flex justify-content-center align-items-center  d-none ">
+          <div className=" col-lg-4 column col-left d-lg-flex justify-content-center align-items-center d-none ">
             <HeadingCompo first="Sign" second="Up" />
           </div>
         </div>
