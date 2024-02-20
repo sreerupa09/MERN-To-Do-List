@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {toast} from "react-toastify"
-import { useEffect } from "react";
+import {toast} from "react-toastify";
+
 const Update = ({ display, update }) => {
   useEffect(() => {
     setInputs({
@@ -10,7 +10,7 @@ const Update = ({ display, update }) => {
     });
   }, [update]);
   
-  const [Inputs, setInputs] = useState({
+  const [inputs, setInputs] = useState({
     title: "",
     body: "",
   });
@@ -18,34 +18,37 @@ const Update = ({ display, update }) => {
 
   const change = (e) => {
     const { name, value } = e.target;
-    setInputs({ ...Inputs, [name]: value });
+    setInputs({ ...inputs, [name]: value });
   };
+
   const submit = async () => {
     await axios
-      .put(`http://localhost:1000/api/v2/updateTask/${update.id}`, Inputs)
-      .then((response) => {
-        toast.success((response))
+      .put(`http://localhost:1000/api/v2/updateTask/${update.id}`, inputs)
+      .then((res) => {
+        toast.success(res.data.message);
       });
     
     display("none");
   };
+
   return (
     <div className="p-5 d-flex justify-content-center align-items-start flex-column update">
       <h3>Update Your Task</h3>
       <input
         type="text"
         className="todo-inputs my-4 w-100 p-3"
-        value={Inputs.title}
+        value={inputs.title}
         name="title"
         onChange={change}
       />
       <textarea
         className="todo-inputs w-100 p-3"
-        value={Inputs.body}
+        value={inputs.body}
         name="body"
         onChange={change}
       />
-      <div className="d-flex justify-content-start w-100">
+      {/* <div className="d-flex justify-content-start w-100"> */}
+      <div>
         <button className="home-btn update-btn p-2 my-3 " onClick={submit}>
           Update
         </button>

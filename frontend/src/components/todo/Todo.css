@@ -36,7 +36,7 @@
 .card-text{
     color: #12486B;
 }
-.card-icon-head:hover{
+.card-icon-head{
     cursor: pointer;
     transition: all 0.3s;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;

@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import "./Todo.css";
 import TodoCards from "./TodoCards";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Update from "./Update";
-import { useSelector, useDispatch } from "react-redux";
-import { authActions } from "../../store";
 import axios from "axios";
 
 let id = sessionStorage.getItem("id");
@@ -16,6 +14,8 @@ const Todo = () => {
   const [inputs, setInputs] = useState({ title: "", body: "" });
   const [array, setArray] = useState([]);
 
+  //const [toUpdateArray, setToUpdateArray] = useState(null);
+
   const show = () => {
     document.getElementById("textarea").style.display = "block";
   };
@@ -23,6 +23,7 @@ const Todo = () => {
     const { name, value } = e.target;
     setInputs({ ...inputs, [name]: value });
   };
+
   const submit = async () => {
     if (inputs.title === "" || inputs.body === "") {
       toast.error("Title Or Body Should Not Be Empty");
@@ -31,8 +32,7 @@ const Todo = () => {
         await axios
           .post(
             "http://localhost:1000/api/v2/addTask",
-            { title: inputs.title, body: inputs.body, id: id },
-            { timeout: 5000 }
+            { title: inputs.title, body: inputs.body, id: id }
           )
           .then((res) => {
             console.log(res);
@@ -53,10 +53,9 @@ const Todo = () => {
       await axios
         .delete(
           `http://localhost:1000/api/v2/deleteTask/${cardid}`,
-          { data: { id: id } },
-          { timeout: 5000 }
+          { data: { id: id } }
         )
-        .then((res) => {
+        .then(() => {
           toast.success("Your Task is Deleted");
         });
     } else {
@@ -73,15 +72,14 @@ const Todo = () => {
   };
   const update =  (value) =>{
     toUpdateArray= array[value];
-    
-
-  }
+    //setToUpdateArray(array[value]);
+  };
 
   useEffect(() => {
     if (id) {
       const fetch = async () => {
         await axios
-          .get(`http://localhost:1000/api/v2/getTasks/${id}`, { timeout: 5000 })
+          .get(`http://localhost:1000/api/v2/getTasks/${id}`)
           .then((res) => {
             setArray(res.data.list);
           });
@@ -95,7 +93,7 @@ const Todo = () => {
       <div className="todo">
         <ToastContainer />
         <div className="todo-main container d-flex justify-content-center align-items-center my-4 flex-column">
-          <div className="d-flex flex-column todo-inputs-div w-100 p-1">
+          <div className="d-flex flex-column todo-inputs-div w-lg-50 w-100 p-1">
             <input
               type="text"
               placeholder="Title"
@@ -115,7 +113,7 @@ const Todo = () => {
               onChange={change}
             />
           </div>
-          <div className="w-lg-50 w-100 d-flex justify-content-end my-3">
+          <div className="w-50 w-100 d-flex justify-content-end my-3">
             <button className="home-btn px-2 py-1" onClick={submit}>
               Add
             </button>
@@ -145,6 +143,7 @@ const Todo = () => {
       <div className="todo-update" id="todo-update">
         <div className="container update">
           <Update display={dis} update={toUpdateArray}/>
+          {/* {toUpdateArray && <Update display={dis} update={toUpdateArray} />} */}
         </div>
       </div>
     </>
