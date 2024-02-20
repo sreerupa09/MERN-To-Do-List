@@ -3,6 +3,7 @@ import axios from "axios";
 import {toast} from "react-toastify";
 
 const Update = ({ display, update }) => {
+
   useEffect(() => {
     setInputs({
       title: update.title,
@@ -23,12 +24,14 @@ const Update = ({ display, update }) => {
 
   const submit = async () => {
     await axios
-      .put(`http://localhost:1000/api/v2/updateTask/${update.id}`, inputs)
+      .put(`http://localhost:1000/api/v2/updateTask/${update._id}`,inputs)
       .then((res) => {
+        //console.log(res);
         toast.success(res.data.message);
       });
     
     display("none");
+    console.log(inputs);
   };
 
   return (

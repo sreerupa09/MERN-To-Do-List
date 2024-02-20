@@ -10,3 +10,12 @@
     border-bottom: 1px solid #0B666A;
     padding: 5px;
 }
+/* @media screen and (max-width: 768px) {
+    h1 {
+      font-size: 28px;
+    }
+  
+    p {
+      font-size: 14px;
+    }
+  } */

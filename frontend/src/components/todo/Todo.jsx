@@ -8,7 +8,7 @@ import axios from "axios";
 
 let id = sessionStorage.getItem("id");
 
-let toUpdateArray =[];
+let toUpdateArray=[];
 
 const Todo = () => {
   const [inputs, setInputs] = useState({ title: "", body: "" });
@@ -70,8 +70,9 @@ const Todo = () => {
     console.log(value);
     document.getElementById("todo-update").style.display = value;
   };
-  const update =  (value) =>{
-    toUpdateArray= array[value];
+  const update = (value) =>{
+    //console.log(array[value]);
+    toUpdateArray=array[value];
     //setToUpdateArray(array[value]);
   };
 
